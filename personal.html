@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Личный вклад — Экология Брянской области</title>
+    <meta name="description" content="Личный вклад в экологию Брянской области: экокалькулятор, тест эко-активиста, сообщения о нарушениях и трекер экопривычек." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+        /* Стили страницы «Личный вклад» — контент виден сразу, формы и кнопки работают */
+        .page-personal .reveal { opacity: 1; transform: none; }
+        .page-personal main .container { max-width: 1120px; margin-left: auto; margin-right: auto; padding: 0 20px; }
+        .page-personal #calculator .card { padding: 24px; }
+        .page-personal .form-group label { color: var(--text); }
+        .page-personal .form-group small { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+        .page-personal #calcResult .card { padding: 24px; }
+        .page-personal #ecoQuiz label { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 8px; cursor: pointer; }
+        .page-personal #ecoQuiz input[type="radio"] { margin-right: 6px; }
+        .page-personal #habitTracker label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer; }
+        .page-personal .home-air-indicator-bar { height: 14px; border-radius: 999px; background: var(--border); position: relative; overflow: hidden; }
+        .page-personal .home-air-indicator-fill { height: 100%; border-radius: 999px; transition: left 0.3s ease; }
+        .page-personal .tip-card { border-left: 4px solid var(--accent); background: rgba(16,185,129,0.08); }
+        .page-personal .challenge-counter { font-size: 2.5rem; font-weight: 800; color: var(--accent); }
+        .page-personal .today-list { list-style: none; padding: 0; margin: 0; }
+        .page-personal .today-list li { padding: 10px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+        .page-personal .today-list li:last-child { border-bottom: none; }
+        .page-personal .today-list input[type="checkbox"] { width: 20px; height: 20px; }
+        .page-personal .link-card { display: block; text-decoration: none; color: inherit; padding: 20px; border-radius: 12px; border: 1px solid var(--border); transition: border-color 0.2s, background 0.2s; }
+        .page-personal .link-card:hover { border-color: var(--accent); background: rgba(16,185,129,0.06); }
+        .page-personal .green-points-list { list-style: none; padding: 0; margin: 0; }
+        .page-personal .green-points-list li { padding: 14px 0; border-bottom: 1px solid var(--border); display: grid; gap: 6px; }
+        .page-personal .green-points-list li:last-child { border-bottom: none; }
+        .page-personal .green-points-list .gp-name { font-weight: 700; color: var(--accent); }
+        .page-personal .green-points-list .gp-address { font-size: 13px; color: var(--muted); }
+        .page-personal .green-points-list .gp-types { font-size: 12px; }
+        .page-personal .green-points-list .gp-types span { display: inline-block; margin-right: 6px; padding: 2px 8px; background: rgba(16,185,129,0.15); border-radius: 6px; }
+        .tests-floating-btn { position: fixed; left: 0; top: 50%; transform: translateY(-50%); background: linear-gradient(135deg, var(--primary), var(--accent)); color: #022c22; border: none; border-radius: 0 16px 16px 0; padding: 16px 10px; cursor: pointer; z-index: 900; box-shadow: 4px 0 20px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; gap: 6px; font-weight: 700; font-size: 13px; transition: all 0.3s ease; }
+        .tests-floating-btn:hover { padding-left: 16px; box-shadow: 6px 0 30px rgba(16,185,129,0.4); }
+        .tests-floating-icon { font-size: 24px; }
+        .tests-floating-label { writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg); }
+    </style>
+</head>
+<body class="page-personal">
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <a href="index.html" class="logo" aria-hidden="true" style="text-decoration: none; display: flex; align-items: center; justify-content: center;">🌿</a>
+                <div>
+                    <h1>Экологический профиль региона</h1>
+                    <p class="tagline">Обзор · База знаний · Личный вклад · Сравнение</p>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="overview.html" class="nav-link">Обзор</a>
+                <a href="knowledge.html" class="nav-link">База знаний</a>
+                <a href="personal.html" class="nav-link" aria-current="page">Личный вклад</a>
+                <a href="comparison.html" class="nav-link">Сравнение</a>
+                <a href="news.html" class="nav-link">Новости</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="index.html" class="btn-back">← На главную</a>
+        </div>
+        <section class="section hero reveal">
+            <div class="container">
+                <h2><span class="icon icon-idea" aria-hidden="true">🧩</span> Личный вклад в экологию региона</h2>
+                <p class="lead">
+                    Этот раздел помогает увидеть, как повседневные решения влияют на окружающую среду: рассчитать углеродный след,
+                    понять свой тип эко‑активиста, зафиксировать нарушения и отслеживать полезные привычки.
+                </p>
+            </div>
+        </section>
+
+        <!-- Моё экологическое обязательство (перенесено наверх) -->
+        <section class="section reveal">
+            <div class="container">
+                <div class="card">
+                    <h3>📜 Моё экологическое обязательство</h3>
+                    <p class="muted" style="margin-bottom: 16px;">Напишите одно обязательство на этот месяц (например: «Не буду брать пакеты в магазине» или «Буду сдавать батарейки раз в месяц»). Оно сохранится только у вас в браузере.</p>
+                    <div class="form-group">
+                        <label>Обязательство на этот месяц</label>
+                        <textarea id="pledgeText" class="form-input" rows="3" placeholder="Например: Каждый понедельник — день без мяса или Всегда брать с собой сумку"></textarea>
+                    </div>
+                    <button type="button" id="btnSavePledge" class="btn">Сохранить</button>
+                    <p id="pledgeStatus" class="muted" style="margin-top: 12px; font-size: 13px;"></p>
+                    <div id="pledgeDisplay" style="margin-top: 16px; padding: 16px; background: rgba(16,185,129,0.08); border-radius: 12px; display: none;">
+                        <strong>Ваше обязательство:</strong>
+                        <p id="pledgeContent" style="margin: 8px 0 0;"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Что сделать сегодня + Совет дня -->
+        <section class="section reveal">
+            <div class="container">
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>✅ Что я могу сделать сегодня</h3>
+                        <p class="muted" style="margin-bottom: 16px;">Отмечайте по мере выполнения — данные сохраняются в браузере.</p>
+                        <ul class="today-list" id="todayList">
+                            <li><input type="checkbox" class="today-check" data-id="t1" id="t1"><label for="t1">Взять многоразовую сумку в магазин</label></li>
+                            <li><input type="checkbox" class="today-check" data-id="t2" id="t2"><label for="t2">Выключить свет, выходя из комнаты</label></li>
+                            <li><input type="checkbox" class="today-check" data-id="t3" id="t3"><label for="t3">Наполнить бутылку водой вместо покупки новой</label></li>
+                            <li><input type="checkbox" class="today-check" data-id="t4" id="t4"><label for="t4">Сдать батарейки или пластик в пункт приёма</label></li>
+                            <li><input type="checkbox" class="today-check" data-id="t5" id="t5"><label for="t5">Пройтись пешком или поехать на велосипеде</label></li>
+                        </ul>
+                    </div>
+                    <div class="card tip-card">
+                        <h3>💡 Совет дня</h3>
+                        <p id="tipOfDay" style="font-size: 15px; line-height: 1.6; margin: 0;"></p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;">
+                            <button type="button" id="btnNextTip" class="btn" style="font-size: 13px;">Другой совет</button>
+                            <button type="button" id="btnAddTip" class="btn btn-secondary" style="font-size: 13px;">Добавить к избранному</button>
+                        </div>
+                        <div id="selectedTipsBox" style="margin-top: 16px; display: none;">
+                            <p style="margin-bottom: 8px; font-weight: 600;">Избранные советы:</p>
+                            <ul id="selectedTipsList" style="list-style: none; padding: 0; margin: 0; max-height: 160px; overflow-y: auto;"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Экологический калькулятор (только в разделе «Личный вклад») -->
+        <section class="section reveal" id="calculator">
+            <div class="container">
+                <h2><span class="icon icon-idea" aria-hidden="true">🧮</span> Экологический калькулятор</h2>
+                <div class="card" style="margin-top: 8px;">
+                    <p>
+                        Заполните данные о транспорте, энергии и отходах — калькулятор оценит ваш годовой углеродный след
+                        и подскажет, с чего лучше начать изменения.
+                    </p>
+                    <div class="grid-2" style="margin-top: 24px;">
+                        <div>
+                            <h3 style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                                <span style="font-size: 24px;">🚗</span>
+                                <span>Транспорт</span>
+                            </h3>
+                            <div class="form-group">
+                                <label>Поездки на автомобиле (км/месяц)</label>
+                                <input type="number" id="calcCar" class="form-input" value="0" min="0" placeholder="Например: 500" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">💡 Среднее: 300–800 км/месяц</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Поездки на общественном транспорте (км/месяц)</label>
+                                <input type="number" id="calcPublic" class="form-input" value="0" min="0" placeholder="Например: 200" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">🚌 Автобус, трамвай, электричка</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Перелёты (часов/год)</label>
+                                <input type="number" id="calcFlights" class="form-input" value="0" min="0" placeholder="Например: 10" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">✈️ Один перелёт ≈ 2–3 часа</small>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
+                                <span style="font-size: 24px;">⚡</span>
+                                <span>Энергия и отходы</span>
+                            </h3>
+                            <div class="form-group">
+                                <label>Потребление электроэнергии (кВт·ч/месяц)</label>
+                                <input type="number" id="calcEnergy" class="form-input" value="0" min="0" placeholder="Например: 200" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">⚡ Квартира: 150–300 кВт·ч/мес</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Потребление газа (м³/месяц)</label>
+                                <input type="number" id="calcGas" class="form-input" value="0" min="0" placeholder="Например: 80" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">🏠 Отопление и готовка</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Отходы (кг/месяц)</label>
+                                <input type="number" id="calcWaste" class="form-input" value="0" min="0" placeholder="Например: 30" />
+                                <small style="display: block; margin-top: 4px; color: var(--muted); font-size: 12px;">♻️ Среднее: 20–40 кг/месяц на человека</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 32px;">
+                        <button id="btnCalculate" class="btn" style="padding: 14px 36px; font-size: 16px; font-weight: 700;">
+                            <span style="margin-right: 10px; font-size: 20px;">🧮</span>
+                            Рассчитать углеродный след
+                        </button>
+                    </div>
+                    <div id="calcResult" style="margin-top: 32px; display: none;">
+                        <div class="card" style="background: linear-gradient(135deg, rgba(16,185,129,0.18), rgba(6,182,212,0.18)); border: 2px solid rgba(16,185,129,0.5); padding: 24px;">
+                            <div style="text-align: center; margin-bottom: 16px;">
+                                <div style="font-size: 56px; margin-bottom: 12px;">🌍</div>
+                                <h3 style="margin: 0 0 8px; font-size: 22px;">Ваш углеродный след</h3>
+                                <div style="font-size: 38px; font-weight: 800; color: var(--accent); margin: 16px 0;">
+                                    <span id="calcTotal"></span> <span style="font-size: 18px; color: var(--muted); font-weight: 600;">тонн CO₂/год</span>
+                                </div>
+                            </div>
+                            <div id="calcRecommendations" style="margin-top: 16px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Тесты — выдвижная панель + боковая кнопка -->
+        <button id="testsFloatingBtn" class="tests-floating-btn" aria-label="Открыть тесты" title="Пройти тесты">
+            <span class="tests-floating-icon">🎯</span>
+            <span class="tests-floating-label">Тесты</span>
+        </button>
+        <section class="section reveal">
+            <div class="container">
+                <h2><span class="icon icon-idea" aria-hidden="true">🎯</span> Тесты</h2>
+                <div class="card tests-trigger-card">
+                    <p style="margin-bottom: 16px;">
+                        Пройдите тесты и узнайте свой тип эко‑активиста, оцените экослед в быту и проверьте знания о природе Брянской области.
+                        Результаты сохраняются и отображаются во вкладке «Итоги».
+                    </p>
+                    <button type="button" id="btnOpenTestsDrawer" class="btn">Открыть тесты</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Выдвижная панель с тестами -->
+        <div id="testsDrawerOverlay" class="tests-drawer-overlay" aria-hidden="true"></div>
+        <aside id="testsDrawerPanel" class="tests-drawer-panel" role="dialog" aria-label="Панель тестов">
+            <div class="tests-drawer-header">
+                <h2>Тесты</h2>
+                <button type="button" class="tests-drawer-close" id="testsDrawerClose" aria-label="Закрыть">&times;</button>
+            </div>
+            <div class="tests-drawer-tabs" role="tablist">
+                <button type="button" class="tests-drawer-tab active" role="tab" id="tab-activist" aria-selected="true" data-pane="pane-activist">Эко‑активист</button>
+                <button type="button" class="tests-drawer-tab" role="tab" id="tab-footprint" aria-selected="false" data-pane="pane-footprint">Экослед в быту</button>
+                <button type="button" class="tests-drawer-tab" role="tab" id="tab-region" aria-selected="false" data-pane="pane-region">Знание региона</button>
+                <button type="button" class="tests-drawer-tab" role="tab" id="tab-summary" aria-selected="false" data-pane="pane-summary">Итоги</button>
+            </div>
+            <div class="tests-drawer-body">
+                <!-- Тест 1: Какой ты эко‑активист? -->
+                <div id="pane-activist" class="test-pane active" role="tabpanel">
+                    <p class="tests-drawer-desc">Ответьте на вопросы о привычках — получите тип: «Скептик», «Начинающий», «Осознанный» или «Гуру».</p>
+                    <div id="ecoQuiz" class="quiz-form">
+                        <div class="form-group"><label>Как часто пользуетесь личным автомобилем?</label>
+                            <label class="radio-label"><input type="radio" name="q1" value="3"> Почти каждый день</label>
+                            <label class="radio-label"><input type="radio" name="q1" value="2"> Несколько раз в неделю</label>
+                            <label class="radio-label"><input type="radio" name="q1" value="1"> Редко или не вожу</label>
+                        </div>
+                        <div class="form-group"><label>Сортируете ли отходы дома?</label>
+                            <label class="radio-label"><input type="radio" name="q2" value="1"> Пока нет</label>
+                            <label class="radio-label"><input type="radio" name="q2" value="2"> Частично (бумага/пластик)</label>
+                            <label class="radio-label"><input type="radio" name="q2" value="3"> Почти всё сортирую</label>
+                        </div>
+                        <div class="form-group"><label>Участвуете в экологических акциях, субботниках?</label>
+                            <label class="radio-label"><input type="radio" name="q3" value="1"> Пока нет</label>
+                            <label class="radio-label"><input type="radio" name="q3" value="2"> Несколько раз в год</label>
+                            <label class="radio-label"><input type="radio" name="q3" value="3"> Регулярно</label>
+                        </div>
+                        <div class="form-group"><label>Следите за расходом воды и энергии?</label>
+                            <label class="radio-label"><input type="radio" name="q4" value="1"> Не задумывался(ась)</label>
+                            <label class="radio-label"><input type="radio" name="q4" value="2"> Иногда экономлю</label>
+                            <label class="radio-label"><input type="radio" name="q4" value="3"> Осознанно снижаю расход</label>
+                        </div>
+                        <button type="button" id="btnQuiz" class="btn">Узнать результат</button>
+                        <div id="quizResult" class="quiz-result-block"></div>
+                    </div>
+                </div>
+                <!-- Тест 2: Экослед в быту -->
+                <div id="pane-footprint" class="test-pane" role="tabpanel" hidden>
+                    <p class="tests-drawer-desc">Оцените свои бытовые привычки: вода, свет, отходы на кухне.</p>
+                    <div id="ecoQuizFootprint" class="quiz-form">
+                        <div class="form-group"><label>Как часто оставляете воду течь во время чистки зубов/мытья посуды?</label>
+                            <label class="radio-label"><input type="radio" name="f1" value="3"> Часто</label>
+                            <label class="radio-label"><input type="radio" name="f1" value="2"> Иногда</label>
+                            <label class="radio-label"><input type="radio" name="f1" value="1"> Закрываю кран</label>
+                        </div>
+                        <div class="form-group"><label>Выключаете ли свет, выходя из комнаты?</label>
+                            <label class="radio-label"><input type="radio" name="f2" value="1"> Редко</label>
+                            <label class="radio-label"><input type="radio" name="f2" value="2"> Чаще да</label>
+                            <label class="radio-label"><input type="radio" name="f2" value="3"> Всегда</label>
+                        </div>
+                        <div class="form-group"><label>Используете одноразовую посуду/пакеты?</label>
+                            <label class="radio-label"><input type="radio" name="f3" value="3"> Часто</label>
+                            <label class="radio-label"><input type="radio" name="f3" value="2"> Иногда</label>
+                            <label class="radio-label"><input type="radio" name="f3" value="1"> Стараюсь избегать</label>
+                        </div>
+                        <div class="form-group"><label>Остатки еды и органику выбрасываете или компостируете?</label>
+                            <label class="radio-label"><input type="radio" name="f4" value="3"> Всё в мусор</label>
+                            <label class="radio-label"><input type="radio" name="f4" value="2"> Частично использую</label>
+                            <label class="radio-label"><input type="radio" name="f4" value="1"> Компост или экономлю</label>
+                        </div>
+                        <button type="button" id="btnQuizFootprint" class="btn">Узнать результат</button>
+                        <div id="quizResultFootprint" class="quiz-result-block"></div>
+                    </div>
+                </div>
+                <!-- Тест 3: Знание региона -->
+                <div id="pane-region" class="test-pane" role="tabpanel" hidden>
+                    <p class="tests-drawer-desc">Проверьте знания о природе и экологии Брянской области.</p>
+                    <div id="ecoQuizRegion" class="quiz-form">
+                        <div class="form-group"><label>Главная река Брянской области?</label>
+                            <label class="radio-label"><input type="radio" name="r1" value="0"> Волга</label>
+                            <label class="radio-label"><input type="radio" name="r1" value="1"> Десна</label>
+                            <label class="radio-label"><input type="radio" name="r1" value="0"> Дон</label>
+                        </div>
+                        <div class="form-group"><label>Почему в части районов области ограничен сбор грибов и ягод?</label>
+                            <label class="radio-label"><input type="radio" name="r2" value="0"> Из-за редких видов</label>
+                            <label class="radio-label"><input type="radio" name="r2" value="1"> Радиация после аварии на ЧАЭС</label>
+                            <label class="radio-label"><input type="radio" name="r2" value="0"> Заповедный режим</label>
+                        </div>
+                        <div class="form-group"><label>Крупный заповедник на территории области?</label>
+                            <label class="radio-label"><input type="radio" name="r3" value="0"> Брянский лес (заповедник)</label>
+                            <label class="radio-label"><input type="radio" name="r3" value="1"> Заповедник «Брянский лес»</label>
+                            <label class="radio-label"><input type="radio" name="r3" value="0"> Национальный парк «Орловское Полесье»</label>
+                        </div>
+                        <div class="form-group"><label>Что помогает снизить углеродный след в быту?</label>
+                            <label class="radio-label"><input type="radio" name="r4" value="1"> Экономия энергии и сортировка отходов</label>
+                            <label class="radio-label"><input type="radio" name="r4" value="0"> Только отказ от машины</label>
+                            <label class="radio-label"><input type="radio" name="r4" value="0"> Только покупка эко-товаров</label>
+                        </div>
+                        <button type="button" id="btnQuizRegion" class="btn">Узнать результат</button>
+                        <div id="quizResultRegion" class="quiz-result-block"></div>
+                    </div>
+                </div>
+                <!-- Итоги: сохранённые результаты -->
+                <div id="pane-summary" class="test-pane" role="tabpanel" hidden>
+                    <p class="tests-drawer-desc">Ваши последние результаты по тестам. Пройдите тесты, чтобы заполнить блок.</p>
+                    <div id="testsSummaryContent" class="tests-summary-content"></div>
+                    <button type="button" id="btnRefreshSummary" class="btn btn-secondary" style="margin-top: 12px;">Обновить итоги</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Трекер экопривычек -->
+        <section class="section reveal">
+            <div class="container">
+                <h2><span class="icon icon-idea" aria-hidden="true">📊</span> Трекер экопривычек</h2>
+                <div class="card">
+                    <p>
+                        Отмечайте привычки, которые уже стали частью вашей жизни, — прогресс сохраняется в браузере
+                        (только на вашем устройстве).
+                    </p>
+                    <div id="habitTracker">
+                        <div class="grid-2">
+                            <div>
+                                <label><input type="checkbox" class="habit-checkbox" data-id="bags"> Хожу в магазин с многоразовой сумкой</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="bottle"> Использую многоразовую бутылку для воды</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="sorting"> Сортирую хотя бы часть отходов</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="transport"> Чаще выбираю пешком/велосипед/общественный транспорт</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="energy"> Выключаю свет и технику, когда они не нужны</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="nopack"> Отказываюсь от пластиковых пакетов</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="foodwaste"> Стараюсь не выбрасывать еду (план списка покупок)</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="tap"> Закрываю кран во время чистки зубов/мытья посуды</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="repair"> Чиню вещи вместо покупки новых</label><br />
+                                <label><input type="checkbox" class="habit-checkbox" data-id="local"> Выбираю локальные продукты и товары</label>
+                            </div>
+                            <div>
+                                <p class="muted" style="margin-bottom: 8px;">Ваш прогресс:</p>
+                                <div class="home-air-indicator-bar">
+                                    <div class="home-air-indicator-fill" id="habitProgress" style="left: 4%; background: #10b981;"></div>
+                                </div>
+                                <p style="margin-top: 8px;">
+                                    Отмечено привычек: <strong><span id="habitCount">0</span> / 10</strong>
+                                </p>
+                                <p class="muted" style="font-size: 12px;">
+                                    Чем больше привычек вы отмечаете, тем заметнее ваш личный вклад в экологию региона.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Мини-челлендж -->
+        <section class="section reveal">
+            <div class="container">
+                <div class="grid-2">
+                    <div class="card">
+                        <h3>🏆 Мини-челлендж: дни без пластикового пакета</h3>
+                        <p class="muted" style="margin-bottom: 16px;">Считайте дни, когда вы обошлись без одноразового пакета. Сброс — когда возьмёте пакет (честно).</p>
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; background: rgba(16,185,129,0.08); border-radius: 12px; min-height: 180px;">
+                            <div class="challenge-counter" id="challengeDays">0</div>
+                            <p style="margin: 8px 0 0; color: var(--muted); text-align: center;">дней подряд</p>
+                            <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                                <button type="button" id="btnChallengePlus" class="btn">+1 день</button>
+                                <button type="button" id="btnChallengeReset" class="btn btn-secondary">Сбросить</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h3>🛒 Чек-лист перед походом в магазин</h3>
+                        <p class="muted" style="margin-bottom: 16px;">Проверьте перед выходом — так вы реже забудете сумку и купите лишнего.</p>
+                        <ul class="today-list">
+                            <li><input type="checkbox" id="cl1"><label for="cl1">Взял(а) многоразовую сумку или авоську</label></li>
+                            <li><input type="checkbox" id="cl2"><label for="cl2">Взял(а) пакет для овощей/фруктов или мешочки</label></li>
+                            <li><input type="checkbox" id="cl3"><label for="cl3">Знаю, что именно нужно купить (список)</label></li>
+                            <li><input type="checkbox" id="cl4"><label for="cl4">Бутылка для воды с собой</label></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Форма «Сообщить о нарушении» (в самый конец) -->
+        <section class="section reveal">
+            <div class="container">
+                <h2><span class="icon icon-alert" aria-hidden="true">📣</span> Сообщить о нарушении</h2>
+                <div class="card">
+                    <p>
+                        Если вы заметили свалку, дым, сброс в воду или другое экологическое нарушение, опишите ситуацию —
+                        эти данные помогут формировать карту проблемных точек и обращения в надзорные органы.
+                    </p>
+                    <form id="reportForm" style="margin-top: 20px;">
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Ваше имя</label>
+                                <input type="text" id="reportName" class="form-input" placeholder="Необязательно" />
+                            </div>
+                            <div class="form-group">
+                                <label>Место (адрес или ориентир)</label>
+                                <input type="text" id="reportPlace" class="form-input" placeholder="Например: берег Десны у парка..." />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Краткое описание нарушения</label>
+                            <textarea id="reportDescription" class="form-input" rows="4" placeholder="Что произошло, когда, какие последствия вы видите?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Ссылка на фото или видео (если есть)</label>
+                            <input type="text" id="reportPhoto" class="form-input" placeholder="Ссылка на облако, соцсети и т.п." />
+                        </div>
+                        <button type="submit" class="btn">Отправить сообщение</button>
+                        <p class="muted" style="margin-top: 8px; font-size: 12px;">
+                            После нажатия откроется почтовый клиент с черновиком письма на адрес <strong>harkovasofia2@gmail.com</strong>.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-deeds-bar">
+            <div class="footer-deeds-inner">
+                <div class="footer-deed-item">
+                    <span class="footer-deed-value">1 340</span>
+                    <span class="footer-deed-icon">🌳</span>
+                    <span class="footer-deed-label">деревьев спасено</span>
+                </div>
+                <div class="footer-deed-item">
+                    <span class="footer-deed-value">8 500 кг</span>
+                    <span class="footer-deed-icon">♻️</span>
+                    <span class="footer-deed-label">мусора переработано</span>
+                </div>
+                <div class="footer-deed-item footer-green-energy">
+                    <span class="footer-deed-icon">⚡</span>
+                    <span class="footer-deed-label">Сайт на зелёной энергии</span>
+                </div>
+            </div>
+        </div>
+        <div class="container footer-inner">
+            <div>
+                © <span id="year"></span> Экология Брянской области. Проект сделан Харьковой Софией.
+            </div>
+            <nav class="nav">
+                <a href="index.html">Главная</a>
+                <a href="overview.html">Обзор</a>
+                <a href="knowledge.html">База знаний</a>
+                <a href="personal.html">Личный вклад</a>
+                <a href="comparison.html">Сравнение</a>
+                <a href="news.html">Новости</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        function initPersonalPage() {
+        // Прокрутка к калькулятору при открытии по ссылке personal.html#calculator
+        if (window.location.hash === '#calculator') {
+            setTimeout(function() {
+                var el = document.getElementById('calculator');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // --- КАЛЬКУЛЯТОР УГЛЕРОДНОГО СЛЕДА ---
+        var btnCalculate = document.getElementById('btnCalculate');
+        var calcResult = document.getElementById('calcResult');
+        var calcTotal = document.getElementById('calcTotal');
+        var calcRecommendations = document.getElementById('calcRecommendations');
+
+        if (btnCalculate && calcResult && calcTotal && calcRecommendations) {
+            btnCalculate.addEventListener('click', function() {
+                // Коэффициенты (усреднённые, тонн CO₂ в год на единицу)
+                const car = (parseFloat(document.getElementById('calcCar').value) || 0) * 0.0024;      // 2.4 т на 1000 км/мес
+                const publicTr = (parseFloat(document.getElementById('calcPublic').value) || 0) * 0.0005; // 0.5 т на 1000 км/мес
+                const flights = (parseFloat(document.getElementById('calcFlights').value) || 0) * 0.3;    // 0.3 т/час
+                const energy = (parseFloat(document.getElementById('calcEnergy').value) || 0) * 0.0007;  // 0.7 т на 1000 кВт·ч/мес
+                const gas = (parseFloat(document.getElementById('calcGas').value) || 0) * 0.005;         // 5 т на 1000 м³/мес
+                const waste = (parseFloat(document.getElementById('calcWaste').value) || 0) * 0.001;     // 1 т на 1000 кг/мес
+
+                const total = (car + publicTr + flights + energy + gas + waste).toFixed(2);
+                calcTotal.textContent = total;
+
+                let recText = '';
+                if (total < 2) recText = 'Отличный результат! Ваш след минимален. Делитесь опытом с друзьями.';
+                else if (total < 5) recText = 'Неплохо, но есть потенциал. Попробуйте чаще ходить пешком и экономить энергию.';
+                else recText = 'Стоит задуматься об изменениях: пересмотрите транспорт и сортировку отходов.';
+
+                calcRecommendations.innerHTML = '<p style="font-size: 16px;"><strong>📌 Рекомендация:</strong> ' + recText + '</p>';
+                calcResult.style.display = 'block';
+            });
+        }
+
+        // --- ВЫДВИЖНАЯ ПАНЕЛЬ ТЕСТОВ ---
+        var overlay = document.getElementById('testsDrawerOverlay');
+        var panel = document.getElementById('testsDrawerPanel');
+        var btnOpenDrawer = document.getElementById('btnOpenTestsDrawer');
+        var btnCloseDrawer = document.getElementById('testsDrawerClose');
+        var drawerTabs = document.querySelectorAll('.tests-drawer-tab');
+        var panes = document.querySelectorAll('.test-pane');
+
+        function openTestsDrawer() {
+            if (overlay) overlay.classList.add('open');
+            if (panel) {
+                panel.classList.add('open');
+                panel.setAttribute('aria-hidden', 'false');
+            }
+            document.body.style.overflow = 'hidden';
+            setTimeout(function() { if (btnCloseDrawer) btnCloseDrawer.focus(); }, 100);
+        }
+        function closeTestsDrawer() {
+            if (overlay) overlay.classList.remove('open');
+            if (panel) {
+                panel.classList.remove('open');
+                panel.setAttribute('aria-hidden', 'true');
+            }
+            document.body.style.overflow = '';
+            if (btnOpenDrawer) btnOpenDrawer.focus();
+        }
+
+        if (btnOpenDrawer) btnOpenDrawer.addEventListener('click', openTestsDrawer);
+        var testsFloatingBtn = document.getElementById('testsFloatingBtn');
+        if (testsFloatingBtn) testsFloatingBtn.addEventListener('click', openTestsDrawer);
+        if (btnCloseDrawer) btnCloseDrawer.addEventListener('click', closeTestsDrawer);
+        if (overlay) overlay.addEventListener('click', closeTestsDrawer);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && panel && panel.classList.contains('open')) closeTestsDrawer();
+        });
+
+        // Переключение вкладок
+        function switchTestsTab(paneId) {
+            drawerTabs.forEach(function(t) {
+                var isActive = t.getAttribute('data-pane') === paneId;
+                t.classList.toggle('active', isActive);
+                t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            panes.forEach(function(p) {
+                var isActive = p.id === paneId;
+                p.classList.toggle('active', isActive);
+                p.hidden = !isActive;
+            });
+        }
+        drawerTabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                var paneId = tab.getAttribute('data-pane');
+                if (paneId) switchTestsTab(paneId);
+                if (paneId === 'pane-summary') refreshTestsSummary();
+            });
+        });
+
+        // Сохранение результата теста в localStorage
+        function saveQuizResult(key, data) {
+            try {
+                data.date = new Date().toISOString();
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (e) {}
+        }
+
+        // Тест 1: Эко‑активист
+        var quizButton = document.getElementById('btnQuiz');
+        var quizResult = document.getElementById('quizResult');
+        if (quizButton && quizResult) {
+            quizButton.addEventListener('click', function() {
+                var names = ['q1','q2','q3','q4'];
+                var sum = 0;
+                for (var i = 0; i < names.length; i++) {
+                    var checked = document.querySelector('input[name="' + names[i] + '"]:checked');
+                    sum += checked ? Number(checked.value) : 0;
+                }
+                if (sum === 0) {
+                    quizResult.innerHTML = '<p class="muted">Отметьте ответы на вопросы, чтобы получить результат.</p>';
+                    return;
+                }
+                var title = '', text = '';
+                if (sum <= 4) { title = '«Скептик»'; text = 'Пока экология не в приоритете. Выберите одну привычку — например, многоразовую сумку — и попробуйте удержать её месяц.'; }
+                else if (sum <= 6) { title = '«Начинающий»'; text = 'Вы только присматриваетесь к экотеме. Начните с простого: многоразовая сумка, сортировка бумаги и экономия энергии дома.'; }
+                else if (sum <= 9) { title = '«Осознанный»'; text = 'Вы уже делаете многое правильно. Подключайтесь к местным эко‑акциям и делитесь опытом с друзьями или одноклассниками.'; }
+                else { title = '«Гуру»'; text = 'Экология — часть вашего образа жизни. Вы можете становиться наставником для других и инициировать собственные проекты.'; }
+                quizResult.innerHTML = '<div class="card" style="margin-top: 12px;"><h3 style="margin-top:0;">' + title + '</h3><p>' + text + '</p></div>';
+                saveQuizResult('ecoQuizActivist', { title: title, text: text, sum: sum });
+            });
+        }
+
+        // Тест 2: Экослед в быту
+        var btnQuizFootprint = document.getElementById('btnQuizFootprint');
+        var quizResultFootprint = document.getElementById('quizResultFootprint');
+        if (btnQuizFootprint && quizResultFootprint) {
+            btnQuizFootprint.addEventListener('click', function() {
+                var names = ['f1','f2','f3','f4'];
+                var sum = 0;
+                for (var i = 0; i < names.length; i++) {
+                    var checked = document.querySelector('input[name="' + names[i] + '"]:checked');
+                    sum += checked ? Number(checked.value) : 0;
+                }
+                if (sum === 0) {
+                    quizResultFootprint.innerHTML = '<p class="muted">Выберите ответы на все вопросы.</p>';
+                    return;
+                }
+                var title = '', text = '';
+                if (sum <= 5) { title = '«Есть над чем работать»'; text = 'Бытовой след пока высокий. Начните с крана при чистке зубов и выключения света — это уже даст заметную экономию.'; }
+                else if (sum <= 8) { title = '«Умеренный след»'; text = 'Вы уже кое-что делаете. Добавьте отказ от одноразовой посуды и пакетов — это сильно снизит отходы.'; }
+                else { title = '«Осознанный быт»'; text = 'Отличные привычки. Делитесь лайфхаками с соседями и друзьями — массовые изменения начинаются с быта.'; }
+                quizResultFootprint.innerHTML = '<div class="card" style="margin-top: 12px;"><h3 style="margin-top:0;">' + title + '</h3><p>' + text + '</p></div>';
+                saveQuizResult('ecoQuizFootprint', { title: title, text: text, sum: sum });
+            });
+        }
+
+        // Тест 3: Знание региона
+        var btnQuizRegion = document.getElementById('btnQuizRegion');
+        var quizResultRegion = document.getElementById('quizResultRegion');
+        if (btnQuizRegion && quizResultRegion) {
+            btnQuizRegion.addEventListener('click', function() {
+                var names = ['r1','r2','r3','r4'];
+                var score = 0;
+                for (var i = 0; i < names.length; i++) {
+                    var checked = document.querySelector('input[name="' + names[i] + '"]:checked');
+                    if (checked && Number(checked.value) === 1) score++;
+                }
+                var title = '', text = '';
+                if (score <= 1) { title = '«Знакомлюсь с регионом»'; text = 'Есть куда расти. Загляните в раздел «База знаний» — там история, реки, ООПТ и карты Брянской области.'; }
+                else if (score <= 3) { title = '«Хороший уровень»'; text = 'Вы неплохо знаете природу области. Рекомендуем изучить карты загрязнения и пункты приёма вторсырья в разделе «Обзор».'; }
+                else { title = '«Знаток региона»'; text = 'Отлично! Вы ориентируетесь в экологии Брянской области. Можете помогать другим узнавать регион.'; }
+                quizResultRegion.innerHTML = '<div class="card" style="margin-top: 12px;"><h3 style="margin-top:0;">' + title + '</h3><p>' + text + '</p><p class="muted" style="margin-top:8px;">Правильных ответов: ' + score + ' из 4.</p></div>';
+                saveQuizResult('ecoQuizRegion', { title: title, text: text, score: score, max: 4 });
+            });
+        }
+
+        // Итоги: отображение сохранённых результатов
+        var testsSummaryContent = document.getElementById('testsSummaryContent');
+        var btnRefreshSummary = document.getElementById('btnRefreshSummary');
+        function refreshTestsSummary() {
+            if (!testsSummaryContent) return;
+            var html = '';
+            function addCard(name, key) {
+                try {
+                    var raw = localStorage.getItem(key);
+                    if (!raw) { html += '<div class="summary-card"><h4>' + name + '</h4><p class="muted">Пройдите тест, чтобы увидеть результат.</p></div>'; return; }
+                    var d = JSON.parse(raw);
+                    var dateStr = d.date ? new Date(d.date).toLocaleDateString('ru-RU') : '';
+                    html += '<div class="summary-card"><h4>' + name + '</h4><p><strong>' + (d.title || '') + '</strong></p><p>' + (d.text || '') + '</p>' + (dateStr ? '<p class="muted" style="margin-top:8px;font-size:12px;">' + dateStr + '</p>' : '') + '</div>';
+                } catch (e) { html += '<div class="summary-card"><h4>' + name + '</h4><p class="muted">Нет данных.</p></div>'; }
+            }
+            addCard('Эко‑активист', 'ecoQuizActivist');
+            addCard('Экослед в быту', 'ecoQuizFootprint');
+            addCard('Знание региона', 'ecoQuizRegion');
+            testsSummaryContent.innerHTML = html || '<p class="muted">Пройдите тесты во вкладках выше.</p>';
+        }
+        if (btnRefreshSummary) btnRefreshSummary.addEventListener('click', refreshTestsSummary);
+
+        // --- ФОРМА «Сообщи о нарушении» ---
+        var reportForm = document.getElementById('reportForm');
+        if (reportForm) {
+            reportForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var name = (document.getElementById('reportName') && document.getElementById('reportName').value) ? document.getElementById('reportName').value : 'Аноним';
+                var place = (document.getElementById('reportPlace') && document.getElementById('reportPlace').value) ? document.getElementById('reportPlace').value : 'Не указан';
+                var description = (document.getElementById('reportDescription') && document.getElementById('reportDescription').value) ? document.getElementById('reportDescription').value : 'Не указано';
+                var photo = (document.getElementById('reportPhoto') && document.getElementById('reportPhoto').value) ? document.getElementById('reportPhoto').value : 'нет ссылки';
+                var subject = encodeURIComponent('Сообщение о возможном экологическом нарушении');
+                var body = encodeURIComponent('Имя: ' + name + '\nМесто: ' + place + '\n\nОписание:\n' + description + '\n\nФото/видео: ' + photo);
+                window.location.href = 'mailto:harkovasofia2@gmail.com?subject=' + subject + '&body=' + body;
+            });
+        }
+
+        // --- ТРЕКЕР ЭКОПРИВЫЧЕК ---
+        var habitCheckboxes = document.querySelectorAll('.habit-checkbox');
+        var habitProgress = document.getElementById('habitProgress');
+        var habitCountEl = document.getElementById('habitCount');
+
+        function updateHabitsFromStorage() {
+            if (!habitCheckboxes.length) return;
+            var saved = {};
+            try { saved = JSON.parse(localStorage.getItem('ecoHabits') || '{}'); } catch (err) { saved = {}; }
+            for (var j = 0; j < habitCheckboxes.length; j++) {
+                var id = habitCheckboxes[j].getAttribute('data-id');
+                habitCheckboxes[j].checked = !!saved[id];
+            }
+            recalcHabits();
+        }
+
+        function recalcHabits() {
+            if (!habitCheckboxes.length || !habitProgress || !habitCountEl) return;
+            var total = habitCheckboxes.length;
+            var checked = 0;
+            for (var k = 0; k < habitCheckboxes.length; k++) { if (habitCheckboxes[k].checked) checked++; }
+            var percent = total ? (checked / total) * 92 : 0;
+            habitProgress.style.left = (4 + percent) + '%';
+            habitCountEl.textContent = String(checked);
+        }
+
+        if (habitCheckboxes.length) {
+            for (var n = 0; n < habitCheckboxes.length; n++) {
+                (function(cb) {
+                    cb.addEventListener('change', function() {
+                        var saved = {};
+                        try { saved = JSON.parse(localStorage.getItem('ecoHabits') || '{}'); } catch (err) { saved = {}; }
+                        var id = cb.getAttribute('data-id');
+                        saved[id] = cb.checked;
+                        localStorage.setItem('ecoHabits', JSON.stringify(saved));
+                        recalcHabits();
+                    });
+                })(habitCheckboxes[n]);
+            }
+            updateHabitsFromStorage();
+        }
+
+        // --- ЧТО СДЕЛАТЬ СЕГОДНЯ (чеклист) ---
+        var todayChecks = document.querySelectorAll('.today-check');
+        function loadToday() {
+            try {
+                var saved = JSON.parse(localStorage.getItem('ecoToday') || '{}');
+                var dateKey = new Date().toDateString();
+                if (saved.date === dateKey && saved.checked) {
+                    for (var t = 0; t < todayChecks.length; t++) {
+                        var id = todayChecks[t].getAttribute('data-id');
+                        todayChecks[t].checked = saved.checked[id] === true;
+                    }
+                }
+            } catch (e) {}
+        }
+        function saveToday() {
+            var checked = {};
+            for (var t = 0; t < todayChecks.length; t++) {
+                var id = todayChecks[t].getAttribute('data-id');
+                checked[id] = todayChecks[t].checked;
+            }
+            try {
+                localStorage.setItem('ecoToday', JSON.stringify({ date: new Date().toDateString(), checked: checked }));
+            } catch (e) {}
+        }
+        if (todayChecks.length) {
+            loadToday();
+            for (var t = 0; t < todayChecks.length; t++) {
+                todayChecks[t].addEventListener('change', saveToday);
+            }
+        }
+
+        // --- СОВЕТ ДНЯ ---
+        var tips = [
+            'Проверьте, не течёт ли кран — одна капля в секунду это десятки литров в месяц.',
+            'Зарядки от телефонов и ноутбуков потребляют ток даже когда гаджет отключён. Вынимайте из розетки.',
+            'Грибы и ягоды в загрязнённых районах Брянской области накапливают радионуклиды. Уточняйте карты перед сбором.',
+            'Один многоразовый стакан для кофе с собой за год заменяет сотни одноразовых стаканов.',
+            'Сдавайте батарейки в пункты приёма — одна батарейка загрязняет до 20 м² почвы.',
+            'Короткая поездка на машине (до 2–3 км) часто быстрее и полезнее пройти пешком или доехать на велосипеде.',
+            'Сортировка начинается с одного контейнера: например, только бумага. Добавляйте фракции по мере привыкания.',
+            'В Брянске есть пункты приёма одежды — вещи в хорошем состоянии можно отдать, а не выбросить.',
+            'Локальные овощи и фрукты с рынка — меньше транспортного следа, чем из супермаркета.',
+            'Стирайте при 30°C: это экономит энергию и сохраняет вещи дольше.',
+            'Комнатные растения очищают воздух и создают уют — папоротник, хлорофитум, сансевиерия.',
+            'Один полиэтиленовый пакет разлагается 100–400 лет. Многоразовая сумка — навсегда.'
+        ];
+        var tipIndex = 0;
+        var tipEl = document.getElementById('tipOfDay');
+        var btnNextTip = document.getElementById('btnNextTip');
+        var btnAddTip = document.getElementById('btnAddTip');
+        var selectedTipsList = document.getElementById('selectedTipsList');
+        var selectedTipsBox = document.getElementById('selectedTipsBox');
+        function showTip() {
+            if (tipEl) tipEl.textContent = tips[tipIndex % tips.length];
+        }
+        function loadSelectedTips() {
+            try {
+                var arr = JSON.parse(localStorage.getItem('ecoSelectedTips') || '[]');
+                if (selectedTipsList) {
+                    selectedTipsList.innerHTML = arr.map(function(t, i) {
+                        return '<li style="padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;"><span style="font-size: 13px;">' + t + '</span><button type="button" class="btn btn-secondary" style="padding: 4px 10px; font-size: 11px;" data-idx="' + i + '">×</button></li>';
+                    }).join('');
+                    selectedTipsBox.style.display = arr.length ? 'block' : 'none';
+                    selectedTipsList.querySelectorAll('button').forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            var idx = parseInt(btn.getAttribute('data-idx'), 10);
+                            arr.splice(idx, 1);
+                            localStorage.setItem('ecoSelectedTips', JSON.stringify(arr));
+                            loadSelectedTips();
+                        });
+                    });
+                }
+            } catch (e) {}
+        }
+        if (tipEl) {
+            tipIndex = Math.floor(Math.random() * tips.length);
+            showTip();
+        }
+        if (btnNextTip) {
+            btnNextTip.addEventListener('click', function() {
+                tipIndex++;
+                showTip();
+            });
+        }
+        if (btnAddTip && tipEl) {
+            btnAddTip.addEventListener('click', function() {
+                var t = tipEl.textContent;
+                if (!t) return;
+                try {
+                    var arr = JSON.parse(localStorage.getItem('ecoSelectedTips') || '[]');
+                    if (arr.indexOf(t) === -1) arr.push(t);
+                    localStorage.setItem('ecoSelectedTips', JSON.stringify(arr));
+                    loadSelectedTips();
+                } catch (e) {}
+            });
+        }
+        loadSelectedTips();
+
+        // --- МИНИ-ЧЕЛЛЕНДЖ: ДНИ БЕЗ ПАКЕТА ---
+        var challengeDaysEl = document.getElementById('challengeDays');
+        var btnChallengePlus = document.getElementById('btnChallengePlus');
+        var btnChallengeReset = document.getElementById('btnChallengeReset');
+        function loadChallenge() {
+            try {
+                var v = parseInt(localStorage.getItem('ecoChallengeDays') || '0', 10);
+                if (challengeDaysEl) challengeDaysEl.textContent = String(v);
+            } catch (e) { if (challengeDaysEl) challengeDaysEl.textContent = '0'; }
+        }
+        if (btnChallengePlus) {
+            btnChallengePlus.addEventListener('click', function() {
+                var v = parseInt(challengeDaysEl ? challengeDaysEl.textContent : '0', 10) + 1;
+                try { localStorage.setItem('ecoChallengeDays', String(v)); } catch (e) {}
+                if (challengeDaysEl) challengeDaysEl.textContent = String(v);
+            });
+        }
+        if (btnChallengeReset) {
+            btnChallengeReset.addEventListener('click', function() {
+                try { localStorage.setItem('ecoChallengeDays', '0'); } catch (e) {}
+                if (challengeDaysEl) challengeDaysEl.textContent = '0';
+            });
+        }
+        loadChallenge();
+
+        // --- ОБЯЗАТЕЛЬСТВО ---
+        var pledgeText = document.getElementById('pledgeText');
+        var btnSavePledge = document.getElementById('btnSavePledge');
+        var pledgeStatus = document.getElementById('pledgeStatus');
+        var pledgeDisplay = document.getElementById('pledgeDisplay');
+        var pledgeContent = document.getElementById('pledgeContent');
+        function loadPledge() {
+            try {
+                var text = localStorage.getItem('ecoPledge') || '';
+                if (pledgeText) pledgeText.value = text;
+                if (text && pledgeDisplay && pledgeContent) {
+                    pledgeContent.textContent = text;
+                    pledgeDisplay.style.display = 'block';
+                }
+            } catch (e) {}
+        }
+        if (btnSavePledge && pledgeText) {
+            btnSavePledge.addEventListener('click', function() {
+                var text = pledgeText.value.trim();
+                try { localStorage.setItem('ecoPledge', text); } catch (e) {}
+                if (pledgeStatus) pledgeStatus.textContent = text ? 'Сохранено.' : 'Очищено.';
+                if (pledgeDisplay && pledgeContent) {
+                    pledgeContent.textContent = text;
+                    pledgeDisplay.style.display = text ? 'block' : 'none';
+                }
+            });
+        }
+        loadPledge();
+
+        // --- Зелёные точки: загрузка списка ---
+        var greenListEl = document.getElementById('greenPointsListPersonal');
+        if (greenListEl) {
+            var fallbackPoints = [
+                { name: 'Пункт приёма вторсырья (центр Брянска)', address: 'ул. Красноармейская', types: ['стекло', 'пластик', 'бумага'], note: 'Контейнеры у супермаркета' },
+                { name: 'Экоконтейнер — батарейки и техника', address: 'пр. Ленина, у ТЦ', types: ['батарейки', 'мелкая техника'], note: 'У крупного супермаркета' },
+                { name: 'Благотворительный пункт сбора одежды', address: 'ул. Фокина', types: ['одежда'], note: 'Вещи в хорошем состоянии' },
+                { name: 'Пункт приёма макулатуры', address: 'Бежицкий район', types: ['бумага', 'картон'], note: 'По предварительной записи' },
+                { name: 'Контейнеры для пластика', address: 'Советский район, жилые массивы', types: ['пластик'], note: 'Жёлтые контейнеры во дворах' }
+            ];
+            function renderGreenPoints(arr) {
+                var html = '';
+                for (var i = 0; i < arr.length; i++) {
+                    var p = arr[i];
+                    var typesHtml = '';
+                    if (p.types && p.types.length) {
+                        for (var t = 0; t < p.types.length; t++) { typesHtml += '<span>' + p.types[t] + '</span>'; }
+                    }
+                    html += '<li><span class="gp-name">' + (p.name || '') + '</span><span class="gp-address">' + (p.address || '') + (p.note ? ' · ' + p.note : '') + '</span><span class="gp-types">' + typesHtml + '</span></li>';
+                }
+                greenListEl.innerHTML = html || '<li class="muted">Нет данных. Проверьте раздел «Обзор».</li>';
+            }
+            if (typeof fetch !== 'undefined') {
+                fetch('data/green_points.json').then(function(r) { return r.json(); }).then(function(arr) { renderGreenPoints(arr); }).catch(function() { renderGreenPoints(fallbackPoints); });
+            } else {
+                renderGreenPoints(fallbackPoints);
+            }
+        }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initPersonalPage);
+        } else {
+            initPersonalPage();
+        }
+    </script>
+</body>
+</html>
